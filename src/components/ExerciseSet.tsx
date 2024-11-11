@@ -1,0 +1,125 @@
+import React from 'react';
+import { Trash2 } from 'lucide-react';
+import type { Set, ExerciseType } from '../types';
+
+interface ExerciseSetProps {
+  set: Set;
+  type: ExerciseType;
+  onUpdate: (updatedSet: Set) => void;
+  onDelete: () => void;
+  index: number;
+}
+
+function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps) {
+  const renderSetInputs = () => {
+    switch (type) {
+      case 'weight-reps':
+        return (
+          <>
+            <input
+              type="number"
+              value={set.weight || ''}
+              onChange={(e) => onUpdate({ ...set, weight: Number(e.target.value) })}
+              placeholder="Weight (kg)"
+              className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <input
+              type="number"
+              value={set.reps || ''}
+              onChange={(e) => onUpdate({ ...set, reps: Number(e.target.value) })}
+              placeholder="Reps"
+              className="w-20 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+          </>
+        );
+
+      case 'weight-time':
+        return (
+          <>
+            <input
+              type="number"
+              value={set.weight || ''}
+              onChange={(e) => onUpdate({ ...set, weight: Number(e.target.value) })}
+              placeholder="Weight (kg)"
+              className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <input
+              type="number"
+              value={set.time || ''}
+              onChange={(e) => onUpdate({ ...set, time: Number(e.target.value) })}
+              placeholder="Time (sec)"
+              className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+          </>
+        );
+
+      case 'bodyweight-reps':
+        return (
+          <input
+            type="number"
+            value={set.reps || ''}
+            onChange={(e) => onUpdate({ ...set, reps: Number(e.target.value) })}
+            placeholder="Reps"
+            className="w-20 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+          />
+        );
+
+      case 'bodyweight-time':
+        return (
+          <input
+            type="number"
+            value={set.time || ''}
+            onChange={(e) => onUpdate({ ...set, time: Number(e.target.value) })}
+            placeholder="Time (sec)"
+            className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+          />
+        );
+
+      case 'cardio':
+        return (
+          <>
+            <input
+              type="number"
+              value={set.time || ''}
+              onChange={(e) => onUpdate({ ...set, time: Number(e.target.value) })}
+              placeholder="Time (min)"
+              className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <input
+              type="number"
+              value={set.distance || ''}
+              onChange={(e) => onUpdate({ ...set, distance: Number(e.target.value) })}
+              placeholder="Distance (km)"
+              className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <input
+              type="number"
+              value={set.calories || ''}
+              onChange={(e) => onUpdate({ ...set, calories: Number(e.target.value) })}
+              placeholder="Calories"
+              className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+            />
+          </>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="flex items-center space-x-3 py-2">
+      <span className="text-sm text-gray-500 dark:text-gray-400 w-8">{index + 1}</span>
+      {renderSetInputs()}
+      <button
+        onClick={onDelete}
+        className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+        title="Delete set"
+      >
+        <Trash2 size={18} />
+      </button>
+    </div>
+  );
+}
+
+export default ExerciseSet;
