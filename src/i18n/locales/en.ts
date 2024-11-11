@@ -55,6 +55,7 @@ export default {
       category: 'Category',
       selectMuscleGroup: 'Select muscle group',
       selectCategory: 'Select category',
+      selectType: 'Select exercise type',
       createExercise: 'Create Exercise',
       searchExercises: 'Search exercises...',
       weight: 'Weight (kg)',
@@ -68,6 +69,7 @@ export default {
       restTime: 'Rest Time (seconds)',
       exerciseNotes: 'Add notes for this exercise...',
       previous: 'Previous:',
+      type: 'Exercise type',
       trackTypes: {
         weightReps: 'Track weight and repetitions',
         weightTime: 'Track weight and duration',
@@ -160,5 +162,17 @@ export default {
       bad: 'Bad',
       terrible: 'Terrible',
     },
+    base_exercise: {
+      bench_press: 'Bench Press',
+      deadlift: 'Deadlift',
+      farmers_walk: 'Farmers Walk',
+      push_ups: 'Push-ups',
+      pull_ups: 'Pull-ups',
+      plank: 'Plank',
+      running: 'Running',
+      cycling: 'Cycling',
+      stretching: 'Stretching',
+    },
+    
   },
 };

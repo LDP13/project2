@@ -40,6 +40,15 @@ const exerciseTypes: Record<ExerciseCategory, { value: ExerciseType; label: stri
   ],
 };
 
+const typeTranslationKeys: { [key: string]: string } = {
+  'weight-reps': 'weightReps',
+  'weight-time': 'weightTime',
+  'reps-only': 'repsOnly',
+  'time-only': 'timeOnly',
+  'cardio': 'cardio',
+  'notes-only': 'notesOnly'
+};
+
 function CreateExercise() {
   const navigate = useNavigate();
   const addExercise = useExerciseStore((state) => state.addExercise);
@@ -158,7 +167,7 @@ function CreateExercise() {
               </select>
               {exercise.type && (
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                  {t(`exercise.create.typeHelp.${exercise.type.replace('-', '')}`)}
+                    {t(`exercise.create.typeHelp.${typeTranslationKeys[exercise.type]}`)}
                 </p>
               )}
             </div>

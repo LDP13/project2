@@ -1,5 +1,6 @@
 import React from 'react';
 import type { WorkoutMood } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface MoodSelectorProps {
   value?: WorkoutMood;
@@ -8,15 +9,17 @@ interface MoodSelectorProps {
   previousMood?: WorkoutMood;
 }
 
-const moods: { value: WorkoutMood; emoji: string; label: string }[] = [
-  { value: 'great', emoji: '😁', label: 'Great' },
-  { value: 'good', emoji: '🙂', label: 'Good' },
-  { value: 'neutral', emoji: '😐', label: 'Neutral' },
-  { value: 'bad', emoji: '😕', label: 'Bad' },
-  { value: 'terrible', emoji: '😫', label: 'Terrible' },
-];
-
 function MoodSelector({ value, onChange, label, previousMood }: MoodSelectorProps) {
+  const { t } = useTranslation();
+
+  const moods: { value: WorkoutMood; emoji: string; label: string }[] = [
+    { value: 'great', emoji: '😁', label: t('moods.great') },
+    { value: 'good', emoji: '🙂', label: t('moods.good') },
+    { value: 'neutral', emoji: '😐', label: t('moods.neutral') },
+    { value: 'bad', emoji: '😕', label: t('moods.bad') },
+    { value: 'terrible', emoji: '😫', label: t('moods.terrible') },
+  ];
+
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
@@ -25,7 +28,7 @@ function MoodSelector({ value, onChange, label, previousMood }: MoodSelectorProp
         </label>
         {previousMood && (
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            Previous: {moods.find(m => m.value === previousMood)?.emoji} {moods.find(m => m.value === previousMood)?.label}
+            {t('exercise.previous')} {moods.find(m => m.value === previousMood)?.emoji} {moods.find(m => m.value === previousMood)?.label}
           </span>
         )}
       </div>
