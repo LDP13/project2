@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Plus, Settings } from 'lucide-react';
+import { Home, Plus, Settings, BarChart2 } from 'lucide-react';
 import { useThemeStore } from '../store/theme';
 
 export default function Layout() {
@@ -46,6 +46,16 @@ export default function Layout() {
                   className="flex flex-col items-center justify-center w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full -mt-8 text-white shadow-lg"
                 >
                   <Plus size={32} />
+                </button>
+
+                <button
+                  onClick={() => navigate('/statistics')}
+                  className={`flex flex-col items-center space-y-1 ${
+                    location.pathname === '/statistics' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400'
+                  }`}
+                >
+                  <BarChart2 size={24} />
+                  <span className="text-xs">Stats</span>
                 </button>
                 
                 <button

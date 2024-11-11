@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Workout from './pages/Workout';
 import Settings from './pages/Settings';
+import Statistics from './pages/Statistics';
 import ExerciseSelector from './pages/ExerciseSelector';
 import CreateExercise from './pages/CreateExercise';
 import { useThemeStore } from './store/theme';
@@ -25,6 +26,7 @@ function App() {
           <Route path="workout/:id" element={<Workout />} />
           <Route path="workout/new" element={<Workout />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="statistics" element={<Statistics />} />
           <Route path="exercise-selector" element={<ExerciseSelector />} />
           <Route path="create-exercise" element={<CreateExercise />} />
         </Route>
