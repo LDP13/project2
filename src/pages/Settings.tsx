@@ -1,19 +1,22 @@
 import React from 'react';
 import { Moon, Sun, Globe, User, Palette } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useThemeStore } from '../store/theme';
 import ColorPicker from '../components/ColorPicker';
+import LanguageSelector from '../components/LanguageSelector';
 
 function Settings() {
+  const { t } = useTranslation();
   const { isDark, toggleTheme, colors, setColors } = useThemeStore();
 
   return (
     <div className="p-4 space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('common.settings')}</h1>
       </header>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Profile</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{t('settings.profile')}</h2>
         <div className="bg-white dark:bg-secondary-800 rounded-lg shadow-sm border border-gray-100 dark:border-secondary-700">
           <div className="p-4 flex items-center space-x-4">
             <div className="bg-primary-100 dark:bg-primary-900/50 p-3 rounded-full">
@@ -28,7 +31,7 @@ function Settings() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Preferences</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{t('settings.preferences')}</h2>
         <div className="bg-white dark:bg-secondary-800 rounded-lg shadow-sm border border-gray-100 dark:border-secondary-700 divide-y divide-gray-100 dark:divide-secondary-700">
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -38,9 +41,9 @@ function Settings() {
                 <Sun className="text-gray-600 dark:text-gray-300" size={20} />
               )}
               <div>
-                <h3 className="font-medium text-gray-900 dark:text-white">Theme</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">{t('settings.theme.title')}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {isDark ? 'Dark mode' : 'Light mode'}
+                  {isDark ? t('settings.theme.dark') : t('settings.theme.light')}
                 </p>
               </div>
             </div>
@@ -62,16 +65,16 @@ function Settings() {
             <div className="flex items-center space-x-3">
               <Palette className="text-gray-600 dark:text-gray-300" size={20} />
               <div>
-                <h3 className="font-medium text-gray-900 dark:text-white">Primary Color</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">{t('settings.primaryColor.title')}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Customize app accent color
+                  {t('settings.primaryColor.subtitle')}
                 </p>
               </div>
             </div>
             
             <div className="mt-4">
               <ColorPicker
-                label="Choose Color"
+                label={t('settings.primaryColor.title')}
                 value={colors.primary}
                 onChange={(color) => setColors({ primary: color })}
               />
@@ -82,21 +85,20 @@ function Settings() {
             <div className="flex items-center space-x-3">
               <Globe className="text-gray-600 dark:text-gray-300" size={20} />
               <div>
-                <h3 className="font-medium text-gray-900 dark:text-white">Language</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">English</p>
+                <h3 className="font-medium text-gray-900 dark:text-white">{t('settings.language.title')}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <LanguageSelector />
+                </p>
               </div>
             </div>
-            <button className="text-primary-600 dark:text-primary-400 text-sm font-medium">
-              Change
-            </button>
           </div>
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">About</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{t('settings.about')}</h2>
         <div className="bg-white dark:bg-secondary-800 rounded-lg shadow-sm border border-gray-100 dark:border-secondary-700 p-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">FitStats v1.0.0</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{t('settings.version')}</p>
         </div>
       </section>
     </div>

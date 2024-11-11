@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Plus, Settings, BarChart2 } from 'lucide-react';
 import { useThemeStore } from '../store/theme';
+import { useTranslation } from 'react-i18next';
 
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isDark = useThemeStore((state) => state.isDark);
+  const { t } = useTranslation();
   
   const showNavBar = !location.pathname.includes('/exercise-selector') && 
                     !location.pathname.includes('/create-exercise') &&
@@ -38,7 +40,7 @@ export default function Layout() {
                   }`}
                 >
                   <Home size={24} />
-                  <span className="text-xs">Home</span>
+                  <span className="text-xs">{t('common.home')}</span>
                 </button>
                 
                 <button
@@ -55,7 +57,7 @@ export default function Layout() {
                   }`}
                 >
                   <BarChart2 size={24} />
-                  <span className="text-xs">Stats</span>
+                  <span className="text-xs">{t('common.stats')}</span>
                 </button>
                 
                 <button
@@ -65,7 +67,7 @@ export default function Layout() {
                   }`}
                 >
                   <Settings size={24} />
-                  <span className="text-xs">Settings</span>
+                  <span className="text-xs">{t('common.settings')}</span>
                 </button>
               </div>
             </div>

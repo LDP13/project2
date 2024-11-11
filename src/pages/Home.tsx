@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, ChevronRight, Trash2 } from 'lucide-react';
 import { useWorkoutStore } from '../store/workouts';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
   const navigate = useNavigate();
   const { workouts, deleteWorkout } = useWorkoutStore();
   const [workoutToDelete, setWorkoutToDelete] = useState<string | null>(null);
+  const { t } = useTranslation();
   
   const handleWorkoutClick = (workoutId: string) => {
     navigate(`/workout/${workoutId}`);
@@ -38,16 +40,16 @@ function Home() {
   return (
     <div className="p-4 space-y-6">
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">FitStats</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.title')}</h1>
       </header>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Recent Workouts</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{t('home.recentWorkouts')}</h2>
         <div className="space-y-3">
           {workouts.length === 0 ? (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <p>No workouts yet</p>
-              <p className="text-sm">Start by creating a new workout!</p>
+              <p>{t('home.noWorkouts')}</p>
+              <p className="text-sm">{t('home.startNew')}</p>
             </div>
           ) : (
             workouts.map((workout) => (
@@ -58,13 +60,13 @@ function Home() {
               >
                 <div className="flex items-center justify-between">
                   <h3 className="font-medium text-gray-900 dark:text-white">
-                    {workout.name || 'Untitled Workout'}
+                    {workout.name || t('home.untitledWorkout')}
                   </h3>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={(e) => handleDeleteClick(e, workout.id)}
                       className="p-2 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors"
-                      title="Delete workout"
+                      title={t('common.delete')}
                     >
                       <Trash2 size={18} />
                     </button>
@@ -88,7 +90,7 @@ function Home() {
                   )}
                   {workout.finalMood && (
                     <div className="flex items-center space-x-1">
-                      <span title={`Final mood: ${workout.finalMood}`}>
+                      <span title={`${t('workout.finalMood.title')}: ${t(`moods.${workout.finalMood}`)}`}>
                         {getMoodEmoji(workout.finalMood)}
                       </span>
                     </div>
@@ -116,23 +118,23 @@ function Home() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-secondary-800 rounded-lg p-6 max-w-sm w-full">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Delete Workout
+              {t('home.deleteWorkout.title')}
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Are you sure you want to delete this workout? This action cannot be undone.
+              {t('home.deleteWorkout.message')}
             </p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setWorkoutToDelete(null)}
                 className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-secondary-700 rounded-lg transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 onClick={confirmDelete}
                 className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
               >
-                Delete
+                {t('common.delete')}
               </button>
             </div>
           </div>
