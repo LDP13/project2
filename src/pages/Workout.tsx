@@ -5,6 +5,7 @@ import type { Workout as WorkoutType, WorkoutExercise as WorkoutExerciseType, Se
 import WorkoutExercise from '../components/WorkoutExercise';
 import MoodSelector from '../components/MoodSelector';
 import { useWorkoutStore } from '../store/workouts';
+import { useTranslation } from 'react-i18next';
 
 function Workout() {
   const navigate = useNavigate();

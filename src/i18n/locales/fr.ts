@@ -10,6 +10,8 @@ export default {
       settings: 'Paramètres',
       stats: 'Stats',
       home: 'Accueil',
+      search: 'Rechercher',
+      all: 'Tout',
     },
     home: {
       title: 'FitStats',
@@ -48,6 +50,13 @@ export default {
       },
     },
     exercise: {
+      name: 'Nom de l\'exercice',
+      muscleGroup: 'Groupe musculaire',
+      category: 'Catégorie',
+      selectMuscleGroup: 'Sélectionner un groupe musculaire',
+      selectCategory: 'Sélectionner une catégorie',
+      createExercise: 'Créer l\'exercice',
+      searchExercises: 'Rechercher des exercices...',
       weight: 'Poids (kg)',
       reps: 'Répétitions',
       time: 'Temps (sec)',
@@ -58,6 +67,20 @@ export default {
       restTime: 'Temps de repos (secondes)',
       exerciseNotes: 'Ajoutez des notes pour cet exercice...',
       previous: 'Précédent :',
+      trackTypes: {
+        weightReps: 'Suivre le poids et les répétitions',
+        weightTime: 'Suivre le poids et la durée',
+        repsOnly: 'Suivre uniquement les répétitions',
+        timeOnly: 'Suivre uniquement la durée',
+        cardio: 'Suivre le temps, la distance et les calories',
+        notesOnly: 'Suivre uniquement les notes'
+      },
+      categories: {
+        strength: 'Force (avec poids)',
+        bodyweight: 'Exercices au poids du corps',
+        cardio: 'Entraînement cardio',
+        other: 'Autres activités'
+      }
     },
     settings: {
       profile: 'Profil',
@@ -86,10 +109,30 @@ export default {
         '90': '90 derniers jours',
       },
       overview: 'Aperçu',
+      totalVolume: 'Volume Total',
+      totalReps: 'répétitions',
+      totalWeightLifted: 'Poids Total Soulevé :',
+      trainingFrequency: 'Fréquence d\'entraînement',
+      sessionsPerWeek: 'séances/semaine',
+      averageDuration: 'Durée moyenne :',
+      minutesPerSession: 'minutes/séance',
       volumeAnalysis: 'Analyse du volume',
+      weightedVolumeByExercise: 'Volume pondéré par exercice',
+      volumeFormula: 'Volume total (kg) = Poids × Répétitions × Séries',
+      noDataAvailable: 'Aucune donnée disponible',
       progressTracking: 'Suivi de progression',
       trainingDistribution: 'Distribution de l\'entraînement',
       recoveryAnalysis: 'Analyse de récupération',
+    },
+    muscles: {
+      chest: 'Poitrine',
+      back: 'Dos',
+      legs: 'Jambes',
+      shoulders: 'Épaules',
+      arms: 'Bras',
+      core: 'Abdominaux',
+      cardio: 'Cardio',
+      other: 'Autre'
     },
     moods: {
       great: 'Excellent',

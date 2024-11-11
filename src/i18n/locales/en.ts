@@ -10,6 +10,8 @@ export default {
       settings: 'Settings',
       stats: 'Stats',
       home: 'Home',
+      search: 'Search',
+      all: 'All',
     },
     home: {
       title: 'FitStats',
@@ -48,6 +50,13 @@ export default {
       },
     },
     exercise: {
+      name: 'Exercise Name',
+      muscleGroup: 'Muscle Group',
+      category: 'Category',
+      selectMuscleGroup: 'Select muscle group',
+      selectCategory: 'Select category',
+      createExercise: 'Create Exercise',
+      searchExercises: 'Search exercises...',
       weight: 'Weight (kg)',
       reps: 'Reps',
       time: 'Time (sec)',
@@ -58,6 +67,20 @@ export default {
       restTime: 'Rest Time (seconds)',
       exerciseNotes: 'Add notes for this exercise...',
       previous: 'Previous:',
+      trackTypes: {
+        weightReps: 'Track weight and repetitions',
+        weightTime: 'Track weight and duration',
+        repsOnly: 'Track repetitions only',
+        timeOnly: 'Track duration only',
+        cardio: 'Track time, distance, and calories',
+        notesOnly: 'Track notes only'
+      },
+      categories: {
+        strength: 'Strength (with weights)',
+        bodyweight: 'Bodyweight exercises',
+        cardio: 'Cardio training',
+        other: 'Other activities'
+      }
     },
     settings: {
       profile: 'Profile',
@@ -86,10 +109,30 @@ export default {
         '90': 'Last 90 days',
       },
       overview: 'Overview',
+      totalVolume: 'Total Volume',
+      totalReps: 'reps',
+      totalWeightLifted: 'Total Weight Lifted:',
+      trainingFrequency: 'Training Frequency',
+      sessionsPerWeek: 'sessions/week',
+      averageDuration: 'Average Duration:',
+      minutesPerSession: 'minutes/session',
       volumeAnalysis: 'Volume Analysis',
+      weightedVolumeByExercise: 'Weighted Volume by Exercise',
+      volumeFormula: 'Total volume (kg) = Weight × Reps × Sets',
+      noDataAvailable: 'No data available',
       progressTracking: 'Progress Tracking',
       trainingDistribution: 'Training Distribution',
       recoveryAnalysis: 'Recovery Analysis',
+    },
+    muscles: {
+      chest: 'Chest',
+      back: 'Back',
+      legs: 'Legs',
+      shoulders: 'Shoulders',
+      arms: 'Arms',
+      core: 'Core',
+      cardio: 'Cardio',
+      other: 'Other'
     },
     moods: {
       great: 'Great',

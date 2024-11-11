@@ -86,9 +86,9 @@ function Settings() {
               <Globe className="text-gray-600 dark:text-gray-300" size={20} />
               <div>
                 <h3 className="font-medium text-gray-900 dark:text-white">{t('settings.language.title')}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
                   <LanguageSelector />
-                </p>
+                </div>
               </div>
             </div>
           </div>
