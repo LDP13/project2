@@ -108,7 +108,7 @@ function ExerciseSelector() {
               className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
                 selectedMuscle === 'all'
                   ? 'bg-primary-600 dark:bg-primary-500 text-white'
-                  : 'bg-gray-100 dark:bg-secondary-700 text-gray-600 dark:text-gray-300'
+                  : 'bg-gray-200 dark:bg-secondary-700 text-gray-600 dark:text-gray-300'
               }`}
             >
               All

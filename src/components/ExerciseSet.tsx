@@ -11,6 +11,13 @@ interface ExerciseSetProps {
 }
 
 function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps) {
+  const getPlaceholder = (field: keyof Set['_placeholder']) => {
+    if (set._placeholder?.[field] !== undefined) {
+      return `${set._placeholder[field]}`;
+    }
+    return '';
+  };
+
   const renderSetInputs = () => {
     switch (type) {
       case 'weight-reps':
@@ -20,14 +27,14 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
               type="number"
               value={set.weight || ''}
               onChange={(e) => onUpdate({ ...set, weight: Number(e.target.value) })}
-              placeholder="Weight (kg)"
+              placeholder={getPlaceholder('weight') || "Weight (kg)"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
             <input
               type="number"
               value={set.reps || ''}
               onChange={(e) => onUpdate({ ...set, reps: Number(e.target.value) })}
-              placeholder="Reps"
+              placeholder={getPlaceholder('reps') || "Reps"}
               className="w-20 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
           </>
@@ -40,14 +47,14 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
               type="number"
               value={set.weight || ''}
               onChange={(e) => onUpdate({ ...set, weight: Number(e.target.value) })}
-              placeholder="Weight (kg)"
+              placeholder={getPlaceholder('weight') || "Weight (kg)"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
             <input
               type="number"
               value={set.time || ''}
               onChange={(e) => onUpdate({ ...set, time: Number(e.target.value) })}
-              placeholder="Time (sec)"
+              placeholder={getPlaceholder('time') || "Time (sec)"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
           </>
@@ -59,7 +66,7 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
             type="number"
             value={set.reps || ''}
             onChange={(e) => onUpdate({ ...set, reps: Number(e.target.value) })}
-            placeholder="Reps"
+            placeholder={getPlaceholder('reps') || "Reps"}
             className="w-20 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
           />
         );
@@ -70,7 +77,7 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
             type="number"
             value={set.time || ''}
             onChange={(e) => onUpdate({ ...set, time: Number(e.target.value) })}
-            placeholder="Time (sec)"
+            placeholder={getPlaceholder('time') || "Time (sec)"}
             className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
           />
         );
@@ -82,21 +89,21 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
               type="number"
               value={set.time || ''}
               onChange={(e) => onUpdate({ ...set, time: Number(e.target.value) })}
-              placeholder="Time (min)"
+              placeholder={getPlaceholder('time') || "Time (min)"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
             <input
               type="number"
               value={set.distance || ''}
               onChange={(e) => onUpdate({ ...set, distance: Number(e.target.value) })}
-              placeholder="Distance (km)"
+              placeholder={getPlaceholder('distance') || "Distance (km)"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
             <input
               type="number"
               value={set.calories || ''}
               onChange={(e) => onUpdate({ ...set, calories: Number(e.target.value) })}
-              placeholder="Calories"
+              placeholder={getPlaceholder('calories') || "Calories"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
           </>

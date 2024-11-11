@@ -24,6 +24,14 @@ export interface Set {
   distance?: number;
   calories?: number;
   notes?: string;
+  _placeholder?: {
+    weight?: number;
+    reps?: number;
+    time?: number;
+    distance?: number;
+    calories?: number;
+    notes?: string;
+  };
 }
 
 export interface WorkoutExercise {
@@ -42,14 +50,4 @@ export interface Workout {
   endTime?: string;
   exercises: WorkoutExercise[];
   notes?: string;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  preferences: {
-    theme: 'light' | 'dark';
-    language: string;
-  };
 }

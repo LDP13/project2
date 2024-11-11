@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Plus, Settings } from 'lucide-react';
 import { useThemeStore } from '../store/theme';
 
-function Layout() {
+export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isDark = useThemeStore((state) => state.isDark);
@@ -21,7 +21,7 @@ function Layout() {
   }, [isDark]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-secondary-900 transition-colors duration-200">
+    <div className="min-h-screen bg-gray-100 dark:bg-secondary-900 transition-colors duration-200">
       <div className="max-w-md mx-auto min-h-screen flex flex-col">
         <main className="flex-1 pb-16">
           <Outlet />
@@ -65,5 +65,3 @@ function Layout() {
     </div>
   );
 }
-
-export default Layout;

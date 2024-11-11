@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { ArrowLeft, Plus, Repeat } from 'lucide-react';
 import type { Workout as WorkoutType, WorkoutExercise as WorkoutExerciseType } from '../types';
 import WorkoutExercise from '../components/WorkoutExercise';
 import { useWorkoutStore } from '../store/workouts';
@@ -57,13 +57,49 @@ function Workout() {
   };
 
   const handleAddExercise = () => {
-    // Save current workout state before navigating
     if (isNew) {
       addWorkout(workout);
     } else {
       updateWorkout(workout);
     }
     navigate('/exercise-selector', { state: { workout } });
+  };
+
+  const handleRepeatWorkout = () => {
+    // Create a new workout with the same structure but empty values
+    const repeatedWorkout: WorkoutType = {
+      id: crypto.randomUUID(),
+      name: workout.name,
+      date: new Date().toISOString().split('T')[0],
+      startTime: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+      exercises: workout.exercises.map(ex => ({
+        ...ex,
+        id: crypto.randomUUID(),
+        sets: ex.sets.map(set => ({
+          id: crypto.randomUUID(),
+          // Keep the previous values as placeholders but don't set them as actual values
+          weight: undefined,
+          reps: undefined,
+          time: undefined,
+          distance: undefined,
+          calories: undefined,
+          notes: undefined,
+          _placeholder: {
+            weight: set.weight,
+            reps: set.reps,
+            time: set.time,
+            distance: set.distance,
+            calories: set.calories,
+            notes: set.notes,
+          }
+        }))
+      })),
+      notes: workout.notes
+    };
+
+    // Add the new workout and navigate to it
+    addWorkout(repeatedWorkout);
+    navigate(`/workout/${repeatedWorkout.id}`);
   };
 
   return (
@@ -77,6 +113,16 @@ function Workout() {
             <ArrowLeft size={20} />
             <span className="ml-2">Back</span>
           </button>
+          {!isNew && (
+            <button
+              onClick={handleRepeatWorkout}
+              className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+              title="Repeat workout"
+            >
+              <Repeat size={20} />
+              <span className="ml-2">Repeat</span>
+            </button>
+          )}
         </div>
         
         <div className="px-4 pb-4 space-y-4">

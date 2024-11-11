@@ -46,13 +46,13 @@ function Settings() {
             </div>
             <button
               onClick={toggleTheme}
-              className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${
-                isDark ? 'bg-primary-600' : 'bg-gray-200'
+              className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${
+                isDark ? 'bg-primary-600' : 'bg-gray-400'
               }`}
             >
               <div
-                className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform duration-200 ${
-                  isDark ? 'left-7' : 'left-1'
+                className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-200 ${
+                  isDark ? 'translate-x-6' : 'translate-x-0'
                 }`}
               />
             </button>
