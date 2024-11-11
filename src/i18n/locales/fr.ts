@@ -80,6 +80,24 @@ export default {
         bodyweight: 'Exercices au poids du corps',
         cardio: 'Entraînement cardio',
         other: 'Autres activités'
+      },
+      create: {
+        title: 'Nouvel exercice',
+        namePlaceholder: 'ex: Développé couché',
+        categoryHelp: {
+          strength: 'Pour les exercices utilisant des poids externes',
+          bodyweight: 'Pour les exercices utilisant le poids du corps',
+          cardio: 'Pour les exercices cardiovasculaires',
+          other: 'Pour les activités diverses'
+        },
+        typeHelp: {
+          weightReps: 'Vous suivrez le poids et le nombre de répétitions',
+          weightTime: 'Vous suivrez le poids et la durée',
+          bodyweightReps: 'Vous suivrez le nombre de répétitions',
+          bodyweightTime: 'Vous suivrez la durée',
+          cardio: 'Vous suivrez le temps, la distance et les calories',
+          other: 'Vous suivrez uniquement les notes'
+        }
       }
     },
     settings: {

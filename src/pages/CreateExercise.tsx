@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useExerciseStore } from '../store/exercises';
 import type { ExerciseCategory, ExerciseType } from '../types';
+import { useTranslation } from 'react-i18next';
 
 const muscleGroups = [
   'Chest',
@@ -16,32 +17,33 @@ const muscleGroups = [
 ];
 
 const categories: { value: ExerciseCategory; label: string }[] = [
-  { value: 'strength', label: 'Strength (with weights)' },
-  { value: 'bodyweight', label: 'Bodyweight exercises' },
-  { value: 'cardio', label: 'Cardio training' },
-  { value: 'other', label: 'Other activities' },
+  { value: 'strength', label: 'exercise.categories.strength' },
+  { value: 'bodyweight', label: 'exercise.categories.bodyweight' },
+  { value: 'cardio', label: 'exercise.categories.cardio' },
+  { value: 'other', label: 'exercise.categories.other' },
 ];
 
 const exerciseTypes: Record<ExerciseCategory, { value: ExerciseType; label: string }[]> = {
   strength: [
-    { value: 'weight-reps', label: 'Weight & Reps (e.g., Bench Press)' },
-    { value: 'weight-time', label: 'Weight & Time (e.g., Farmers Walk)' },
+    { value: 'weight-reps', label: 'exercise.trackTypes.weightReps' },
+    { value: 'weight-time', label: 'exercise.trackTypes.weightTime' },
   ],
   bodyweight: [
-    { value: 'bodyweight-reps', label: 'Reps Only (e.g., Push-ups)' },
-    { value: 'bodyweight-time', label: 'Time Only (e.g., Plank)' },
+    { value: 'bodyweight-reps', label: 'exercise.trackTypes.repsOnly' },
+    { value: 'bodyweight-time', label: 'exercise.trackTypes.timeOnly' },
   ],
   cardio: [
-    { value: 'cardio', label: 'Time, Distance & Calories (e.g., Running)' },
+    { value: 'cardio', label: 'exercise.trackTypes.cardio' },
   ],
   other: [
-    { value: 'other', label: 'Notes Only (e.g., Stretching)' },
+    { value: 'other', label: 'exercise.trackTypes.notesOnly' },
   ],
 };
 
 function CreateExercise() {
   const navigate = useNavigate();
   const addExercise = useExerciseStore((state) => state.addExercise);
+  const { t } = useTranslation();
   const [exercise, setExercise] = useState({
     name: '',
     muscle: '',
@@ -64,9 +66,9 @@ function CreateExercise() {
             className="flex items-center text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
           >
             <ArrowLeft size={20} />
-            <span className="ml-2">Back</span>
+            <span className="ml-2">{t('common.back')}</span>
           </button>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">New Exercise</h1>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{t('exercise.create.title')}</h1>
         </div>
       </header>
 
@@ -74,7 +76,7 @@ function CreateExercise() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
-              Exercise Name
+              {t('exercise.name')}
             </label>
             <input
               type="text"
@@ -82,13 +84,13 @@ function CreateExercise() {
               value={exercise.name}
               onChange={(e) => setExercise({ ...exercise, name: e.target.value })}
               className="w-full rounded-lg border-gray-300 dark:border-secondary-600 bg-white dark:bg-secondary-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400"
-              placeholder="e.g., Bench Press"
+              placeholder={t('exercise.create.namePlaceholder')}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
-              Muscle Group
+              {t('exercise.muscleGroup')}
             </label>
             <select
               required
@@ -96,10 +98,10 @@ function CreateExercise() {
               onChange={(e) => setExercise({ ...exercise, muscle: e.target.value })}
               className="w-full rounded-lg border-gray-300 dark:border-secondary-600 bg-white dark:bg-secondary-800 text-gray-900 dark:text-white focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400"
             >
-              <option value="" className="text-gray-500 dark:text-gray-400">Select muscle group</option>
+              <option value="" className="text-gray-500 dark:text-gray-400">{t('exercise.selectMuscleGroup')}</option>
               {muscleGroups.map((muscle) => (
                 <option key={muscle} value={muscle}>
-                  {muscle}
+                  {t(`muscles.${muscle.toLowerCase()}`)}
                 </option>
               ))}
             </select>
@@ -107,7 +109,7 @@ function CreateExercise() {
 
           <div>
             <label className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
-              Category
+              {t('exercise.category')}
             </label>
             <select
               required
@@ -119,19 +121,16 @@ function CreateExercise() {
               })}
               className="w-full rounded-lg border-gray-300 dark:border-secondary-600 bg-white dark:bg-secondary-800 text-gray-900 dark:text-white focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400"
             >
-              <option value="" className="text-gray-500 dark:text-gray-400">Select category</option>
+              <option value="" className="text-gray-500 dark:text-gray-400">{t('exercise.selectCategory')}</option>
               {categories.map((category) => (
                 <option key={category.value} value={category.value}>
-                  {category.label}
+                  {t(category.label)}
                 </option>
               ))}
             </select>
             {exercise.category && (
               <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                {exercise.category === 'strength' && 'For exercises using external weights'}
-                {exercise.category === 'bodyweight' && 'For exercises using your body weight'}
-                {exercise.category === 'cardio' && 'For cardiovascular exercises'}
-                {exercise.category === 'other' && 'For miscellaneous activities'}
+                {t(`exercise.create.categoryHelp.${exercise.category}`)}
               </p>
             )}
           </div>
@@ -139,7 +138,7 @@ function CreateExercise() {
           {exercise.category && (
             <div>
               <label className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">
-                Exercise Type
+                {t('exercise.type')}
               </label>
               <select
                 required
@@ -150,21 +149,16 @@ function CreateExercise() {
                 })}
                 className="w-full rounded-lg border-gray-300 dark:border-secondary-600 bg-white dark:bg-secondary-800 text-gray-900 dark:text-white focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400"
               >
-                <option value="" className="text-gray-500 dark:text-gray-400">Select exercise type</option>
+                <option value="" className="text-gray-500 dark:text-gray-400">{t('exercise.selectType')}</option>
                 {exerciseTypes[exercise.category].map((type) => (
                   <option key={type.value} value={type.value}>
-                    {type.label}
+                    {t(type.label)}
                   </option>
                 ))}
               </select>
               {exercise.type && (
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                  {exercise.type === 'weight-reps' && 'You\'ll track weight and number of repetitions'}
-                  {exercise.type === 'weight-time' && 'You\'ll track weight and duration'}
-                  {exercise.type === 'bodyweight-reps' && 'You\'ll track number of repetitions'}
-                  {exercise.type === 'bodyweight-time' && 'You\'ll track duration'}
-                  {exercise.type === 'cardio' && 'You\'ll track time, distance, and calories'}
-                  {exercise.type === 'other' && 'You\'ll only track notes'}
+                  {t(`exercise.create.typeHelp.${exercise.type.replace('-', '')}`)}
                 </p>
               )}
             </div>
@@ -175,7 +169,7 @@ function CreateExercise() {
           type="submit"
           className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-lg font-medium transition-colors duration-200"
         >
-          Create Exercise
+          {t('exercise.createExercise')}
         </button>
       </form>
     </div>

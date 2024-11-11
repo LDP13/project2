@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { Set, ExerciseType } from '../types';
 import RestTimer from './RestTimer';
+import { useTranslation } from 'react-i18next';
 
 interface ExerciseSetProps {
   set: Set;
@@ -21,6 +22,8 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index, restTime = 60 }: Ex
     }
     return '';
   };
+
+  const { t } = useTranslation();
 
   const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newReps = Number(e.target.value);
@@ -158,13 +161,13 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index, restTime = 60 }: Ex
           type="text"
           value={set.notes || ''}
           onChange={(e) => onUpdate({ ...set, notes: e.target.value })}
-          placeholder="Set notes"
+          placeholder={t('exercise.setNotes')}
           className="flex-1 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
         />
         <button
           onClick={onDelete}
           className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
-          title="Delete set"
+          title={t('exercise.deleteSet')}
         >
           <Trash2 size={18} />
         </button>

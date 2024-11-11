@@ -64,6 +64,7 @@ export default {
       calories: 'Calories',
       setNotes: 'Set notes',
       addSet: 'Add Set',
+      deleteSet: 'Delete Set',
       restTime: 'Rest Time (seconds)',
       exerciseNotes: 'Add notes for this exercise...',
       previous: 'Previous:',
@@ -80,6 +81,24 @@ export default {
         bodyweight: 'Bodyweight exercises',
         cardio: 'Cardio training',
         other: 'Other activities'
+      },
+      create: {
+        title: 'New Exercise',
+        namePlaceholder: 'e.g., Bench Press',
+        categoryHelp: {
+          strength: 'For exercises using external weights',
+          bodyweight: 'For exercises using your body weight',
+          cardio: 'For cardiovascular exercises',
+          other: 'For miscellaneous activities'
+        },
+        typeHelp: {
+          weightReps: 'You\'ll track weight and number of repetitions',
+          weightTime: 'You\'ll track weight and duration',
+          bodyweightReps: 'You\'ll track number of repetitions',
+          bodyweightTime: 'You\'ll track duration',
+          cardio: 'You\'ll track time, distance, and calories',
+          other: 'You\'ll only track notes'
+        }
       }
     },
     settings: {
