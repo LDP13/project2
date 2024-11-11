@@ -8,6 +8,8 @@ export type ExerciseType =
   | 'cardio'         // Cardio - Time, Distance, Calories
   | 'other';         // Other - Notes only
 
+export type WorkoutMood = 'great' | 'good' | 'neutral' | 'bad' | 'terrible';
+
 export interface Exercise {
   id: string;
   name: string;
@@ -50,4 +52,6 @@ export interface Workout {
   endTime?: string;
   exercises: WorkoutExercise[];
   notes?: string;
+  mood?: WorkoutMood;
+  finalMood?: WorkoutMood;
 }

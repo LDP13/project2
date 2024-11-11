@@ -24,6 +24,17 @@ function Home() {
     }
   };
 
+  const getMoodEmoji = (mood?: 'great' | 'good' | 'neutral' | 'bad' | 'terrible') => {
+    switch (mood) {
+      case 'great': return '😁';
+      case 'good': return '🙂';
+      case 'neutral': return '😐';
+      case 'bad': return '😕';
+      case 'terrible': return '😫';
+      default: return null;
+    }
+  };
+
   return (
     <div className="p-4 space-y-6">
       <header className="flex items-center justify-between">
@@ -72,6 +83,13 @@ function Home() {
                       <span>
                         {workout.startTime}
                         {workout.endTime && ` - ${workout.endTime}`}
+                      </span>
+                    </div>
+                  )}
+                  {workout.finalMood && (
+                    <div className="flex items-center space-x-1">
+                      <span title={`Final mood: ${workout.finalMood}`}>
+                        {getMoodEmoji(workout.finalMood)}
                       </span>
                     </div>
                   )}

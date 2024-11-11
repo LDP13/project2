@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Plus, Repeat, Check } from 'lucide-react';
-import type { Workout as WorkoutType, WorkoutExercise as WorkoutExerciseType, Set } from '../types';
+import type { Workout as WorkoutType, WorkoutExercise as WorkoutExerciseType, Set, WorkoutMood } from '../types';
 import WorkoutExercise from '../components/WorkoutExercise';
+import MoodSelector from '../components/MoodSelector';
 import { useWorkoutStore } from '../store/workouts';
 
 function Workout() {
@@ -21,6 +22,7 @@ function Workout() {
   });
 
   const [showFinishDialog, setShowFinishDialog] = useState(false);
+  const [showFinalMoodDialog, setShowFinalMoodDialog] = useState(false);
   const [emptyFields, setEmptyFields] = useState<{ exercise: string; fields: string[] }[]>([]);
 
   useEffect(() => {
@@ -149,15 +151,14 @@ function Workout() {
       setEmptyFields(foundEmptyFields);
       setShowFinishDialog(true);
     } else {
-      finishWorkout();
+      setShowFinalMoodDialog(true);
     }
   };
 
-  const finishWorkout = (autoComplete: boolean = false) => {
-    let updatedWorkout = { ...workout };
-
-    if (autoComplete) {
-      updatedWorkout.exercises = workout.exercises.map(exercise => ({
+  const autoCompleteWorkout = () => {
+    const updatedWorkout = {
+      ...workout,
+      exercises: workout.exercises.map(exercise => ({
         ...exercise,
         sets: exercise.sets.map(set => {
           const newSet: Set = { ...set };
@@ -204,18 +205,46 @@ function Workout() {
           
           return newSet;
         })
-      }));
-    }
+      }))
+    };
 
-    updatedWorkout.endTime = new Date().toLocaleTimeString('en-US', { 
-      hour12: false, 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    setWorkout(updatedWorkout);
+    updateWorkout(updatedWorkout);
+    setShowFinishDialog(false);
+    setShowFinalMoodDialog(true);
+  };
+
+  const handleMoodChange = (mood: WorkoutMood) => {
+    setWorkout(prev => ({
+      ...prev,
+      mood
+    }));
+    updateWorkout({
+      ...workout,
+      mood
     });
+  };
 
+  const handleFinalMoodChange = (finalMood: WorkoutMood) => {
+    const updatedWorkout = {
+      ...workout,
+      finalMood,
+      endTime: new Date().toLocaleTimeString('en-US', { 
+        hour12: false, 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    };
     updateWorkout(updatedWorkout);
     navigate('/home');
   };
+
+  // Find previous workout with the same name for mood comparison
+  const previousWorkout = workouts.find(w => 
+    w.id !== workout.id && 
+    w.name === workout.name && 
+    w.endTime !== undefined
+  );
 
   return (
     <div className="pb-4">
@@ -289,6 +318,13 @@ function Workout() {
               />
             </div>
           </div>
+
+          <MoodSelector
+            label="How are you feeling?"
+            value={workout.mood}
+            onChange={handleMoodChange}
+            previousMood={previousWorkout?.finalMood}
+          />
         </div>
       </header>
 
@@ -357,15 +393,29 @@ function Workout() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  setShowFinishDialog(false);
-                  finishWorkout(true);
-                }}
+                onClick={autoCompleteWorkout}
                 className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
               >
-                Auto-complete & Finish
+                Auto-complete & Continue
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Final Mood Dialog */}
+      {showFinalMoodDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-secondary-800 rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              How was your workout?
+            </h3>
+            <MoodSelector
+              label="Rate your workout"
+              value={workout.finalMood}
+              onChange={handleFinalMoodChange}
+              previousMood={previousWorkout?.finalMood}
+            />
           </div>
         </div>
       )}
