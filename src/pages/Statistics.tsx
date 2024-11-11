@@ -6,10 +6,12 @@ import ProgressionStats from '../components/statistics/ProgressionStats';
 import RestTimeStats from '../components/statistics/RestTimeStats';
 import MuscleDistribution from '../components/statistics/MuscleDistribution';
 import { useWorkoutStore } from '../store/workouts';
+import { useTranslation } from 'react-i18next';
 
 function Statistics() {
   const [timeRange, setTimeRange] = useState('30');
   const { workouts } = useWorkoutStore();
+  const { t } = useTranslation();
 
   const stats = useMemo(() => {
     const daysAgo = parseInt(timeRange);
@@ -247,21 +249,21 @@ function Statistics() {
   return (
     <div className="p-4 space-y-8 pb-20">
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Statistics</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('statistics.title')}</h1>
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
           className="rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white"
         >
-          <option value="7">Last 7 days</option>
-          <option value="30">Last 30 days</option>
-          <option value="90">Last 90 days</option>
+          <option value="7">{t('statistics.timeRanges.7')}</option>
+          <option value="30">{t('statistics.timeRanges.30')}</option>
+          <option value="90">{t('statistics.timeRanges.90')}</option>
         </select>
       </header>
 
       {/* Overview Section */}
       <section>
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Overview</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('statistics.overview')}</h2>
         <QuickStats
           totalReps={stats.totalReps}
           totalWeight={stats.totalWeight}
@@ -272,7 +274,7 @@ function Statistics() {
 
       {/* Volume Analysis Section */}
       <section>
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Volume Analysis</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('statistics.volumeAnalysis')}</h2>
         <VolumeStats
           volumeByExercise={stats.volumeByExercise}
           volumeByMuscle={stats.volumeByMuscle}
@@ -283,13 +285,13 @@ function Statistics() {
 
       {/* Progress Tracking Section */}
       <section>
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Progress Tracking</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('statistics.progressTracking')}</h2>
         <ProgressionStats progression={stats.progression} />
       </section>
 
       {/* Training Distribution Section */}
       <section>
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Training Distribution</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('statistics.trainingDistribution')}</h2>
         <MuscleDistribution
           trainingFrequency={stats.muscleFrequency}
           volumeDistribution={stats.volumeByMuscle}
@@ -298,7 +300,7 @@ function Statistics() {
 
       {/* Recovery Analysis Section */}
       <section>
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Recovery Analysis</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('statistics.recoveryAnalysis')}</h2>
         <RestTimeStats
           averageByExercise={stats.restTimeByExercise}
           averageByMuscle={stats.restTimeByMuscle}

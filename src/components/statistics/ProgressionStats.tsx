@@ -1,5 +1,6 @@
 import React from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ProgressionData {
   currentWeek: {
@@ -34,9 +35,11 @@ interface ProgressionStatsProps {
 }
 
 function ProgressionStats({ progression }: ProgressionStatsProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="bg-white dark:bg-secondary-800 p-4 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-4">Exercise Progression</h2>
+      <h2 className="text-lg font-semibold mb-4">{t('statistics.progressTracking')}</h2>
       <div className="space-y-6">
         {Object.entries(progression)
           .filter(([_, data]) => 
@@ -51,7 +54,7 @@ function ProgressionStats({ progression }: ProgressionStatsProps) {
               {/* Weight Progress */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Weight Progress</h4>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('exercise.weight')}</h4>
                   <div className="flex items-center gap-2">
                     <span className={`text-sm font-medium ${
                       data.trend.weight > 0 
@@ -76,24 +79,24 @@ function ProgressionStats({ progression }: ProgressionStatsProps) {
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Two Weeks Ago</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.twoWeeks')}</p>
                     <p className="font-medium">{data.twoWeeksAgo.weight || 'N/A'}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Last Week</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.lastWeek')}</p>
                     <p className="font-medium">{data.lastWeek.weight || 'N/A'}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">This Week</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.thisWeek')}</p>
                     <p className="font-medium">{data.currentWeek.weight || 'N/A'}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Volume Progress (Weight × Reps × Sets) */}
+              {/* Volume Progress */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Volume Progress (Weight × Reps × Sets)</h4>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('statistics.volumeAnalysis')}</h4>
                   <div className="flex items-center gap-2">
                     <span className={`text-sm font-medium ${
                       data.trend.volume > 0 
@@ -118,24 +121,24 @@ function ProgressionStats({ progression }: ProgressionStatsProps) {
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Two Weeks Ago</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.twoWeeks')}</p>
                     <p className="font-medium">{data.twoWeeksAgo.volume || 'N/A'}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Last Week</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.lastWeek')}</p>
                     <p className="font-medium">{data.lastWeek.volume || 'N/A'}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">This Week</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.thisWeek')}</p>
                     <p className="font-medium">{data.currentWeek.volume || 'N/A'}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Reps Volume Progress (Reps × Sets) */}
+              {/* Reps Volume Progress */}
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Volume Progress (Reps × Sets)</h4>
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('statistics.totalReps')}</h4>
                   <div className="flex items-center gap-2">
                     <span className={`text-sm font-medium ${
                       data.trend.repsVolume > 0 
@@ -153,22 +156,22 @@ function ProgressionStats({ progression }: ProgressionStatsProps) {
                     </span>
                     {data.personalBest.repsVolume > 0 && (
                       <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 px-2 py-1 rounded">
-                        PB: {data.personalBest.repsVolume} reps
+                        PB: {data.personalBest.repsVolume} {t('statistics.totalReps')}
                       </span>
                     )}
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Two Weeks Ago</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.twoWeeks')}</p>
                     <p className="font-medium">{data.twoWeeksAgo.repsVolume || 'N/A'}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Last Week</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.lastWeek')}</p>
                     <p className="font-medium">{data.lastWeek.repsVolume || 'N/A'}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">This Week</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('statistics.timeRanges.thisWeek')}</p>
                     <p className="font-medium">{data.currentWeek.repsVolume || 'N/A'}</p>
                   </div>
                 </div>
