@@ -61,6 +61,7 @@ function WorkoutExercise({ exercise, onUpdate, onDelete }: WorkoutExerciseProps)
             onUpdate={(updatedSet) => updateSet(index, updatedSet)}
             onDelete={() => deleteSet(index)}
             index={index}
+            restTime={exercise.restTime}
           />
         ))}
       </div>

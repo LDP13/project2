@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { Set, ExerciseType } from '../types';
+import RestTimer from './RestTimer';
 
 interface ExerciseSetProps {
   set: Set;
@@ -8,14 +9,48 @@ interface ExerciseSetProps {
   onUpdate: (updatedSet: Set) => void;
   onDelete: () => void;
   index: number;
+  restTime?: number;
 }
 
-function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps) {
+function ExerciseSet({ set, type, onUpdate, onDelete, index, restTime = 60 }: ExerciseSetProps) {
+  const [showTimer, setShowTimer] = useState(false);
+
   const getPlaceholder = (field: keyof Set['_placeholder']) => {
     if (set._placeholder?.[field] !== undefined) {
       return `${set._placeholder[field]}`;
     }
     return '';
+  };
+
+  const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newReps = Number(e.target.value);
+    const newSet = { ...set, reps: newReps };
+    
+    // If reps are entered and there's a weight placeholder, make it the actual value
+    if (newReps && set._placeholder?.weight !== undefined && set.weight === undefined) {
+      newSet.weight = set._placeholder.weight;
+    }
+    
+    onUpdate(newSet);
+
+    // Show timer when both weight and reps are filled
+    if (newSet.weight && newReps) {
+      setShowTimer(true);
+    }
+  };
+
+  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newWeight = Number(e.target.value);
+    onUpdate({ ...set, weight: newWeight });
+
+    // Show timer when both weight and reps are filled
+    if (newWeight && set.reps) {
+      setShowTimer(true);
+    }
+  };
+
+  const handleTimerComplete = () => {
+    setShowTimer(false);
   };
 
   const renderSetInputs = () => {
@@ -26,14 +61,14 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
             <input
               type="number"
               value={set.weight || ''}
-              onChange={(e) => onUpdate({ ...set, weight: Number(e.target.value) })}
+              onChange={handleWeightChange}
               placeholder={getPlaceholder('weight') || "Weight (kg)"}
               className="w-24 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
             <input
               type="number"
               value={set.reps || ''}
-              onChange={(e) => onUpdate({ ...set, reps: Number(e.target.value) })}
+              onChange={handleRepsChange}
               placeholder={getPlaceholder('reps') || "Reps"}
               className="w-20 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
             />
@@ -115,16 +150,34 @@ function ExerciseSet({ set, type, onUpdate, onDelete, index }: ExerciseSetProps)
   };
 
   return (
-    <div className="flex items-center space-x-3 py-2">
-      <span className="text-sm text-gray-500 dark:text-gray-400 w-8">{index + 1}</span>
-      {renderSetInputs()}
-      <button
-        onClick={onDelete}
-        className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
-        title="Delete set"
-      >
-        <Trash2 size={18} />
-      </button>
+    <div className="space-y-2">
+      <div className="flex items-center space-x-3 py-2">
+        <span className="text-sm text-gray-500 dark:text-gray-400 w-8">{index + 1}</span>
+        {renderSetInputs()}
+        <input
+          type="text"
+          value={set.notes || ''}
+          onChange={(e) => onUpdate({ ...set, notes: e.target.value })}
+          placeholder="Set notes"
+          className="flex-1 rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white text-sm placeholder-gray-500 dark:placeholder-gray-400"
+        />
+        <button
+          onClick={onDelete}
+          className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+          title="Delete set"
+        >
+          <Trash2 size={18} />
+        </button>
+      </div>
+      {showTimer && (
+        <div className="ml-8">
+          <RestTimer 
+            duration={restTime} 
+            onComplete={handleTimerComplete}
+            autoStart={true}
+          />
+        </div>
+      )}
     </div>
   );
 }
