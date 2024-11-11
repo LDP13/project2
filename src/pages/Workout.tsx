@@ -11,6 +11,7 @@ function Workout() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { workouts, addWorkout, updateWorkout } = useWorkoutStore();
+  const { t } = useTranslation();
   const isNew = !id;
   
   const [workout, setWorkout] = useState<WorkoutType>({
@@ -114,23 +115,23 @@ function Workout() {
       exercise.sets.forEach(set => {
         switch (exercise.exercise.type) {
           case 'weight-reps':
-            if (set.weight === undefined) emptySetFields.push('weight');
-            if (set.reps === undefined) emptySetFields.push('reps');
+            if (set.weight === undefined) emptySetFields.push(t('exercise.weight'));
+            if (set.reps === undefined) emptySetFields.push(t('exercise.reps'));
             break;
           case 'weight-time':
-            if (set.weight === undefined) emptySetFields.push('weight');
-            if (set.time === undefined) emptySetFields.push('time');
+            if (set.weight === undefined) emptySetFields.push(t('exercise.weight'));
+            if (set.time === undefined) emptySetFields.push(t('exercise.time'));
             break;
           case 'bodyweight-reps':
-            if (set.reps === undefined) emptySetFields.push('reps');
+            if (set.reps === undefined) emptySetFields.push(t('exercise.reps'));
             break;
           case 'bodyweight-time':
-            if (set.time === undefined) emptySetFields.push('time');
+            if (set.time === undefined) emptySetFields.push(t('exercise.time'));
             break;
           case 'cardio':
-            if (set.time === undefined) emptySetFields.push('time');
-            if (set.distance === undefined) emptySetFields.push('distance');
-            if (set.calories === undefined) emptySetFields.push('calories');
+            if (set.time === undefined) emptySetFields.push(t('exercise.time'));
+            if (set.distance === undefined) emptySetFields.push(t('exercise.distance'));
+            if (set.calories === undefined) emptySetFields.push(t('exercise.calories'));
             break;
         }
       });
@@ -256,17 +257,17 @@ function Workout() {
             className="flex items-center text-gray-600 dark:text-gray-300"
           >
             <ArrowLeft size={20} />
-            <span className="ml-2">Back</span>
+            <span className="ml-2">{t('common.back')}</span>
           </button>
           <div className="flex items-center space-x-4">
             {!isNew && (
               <button
                 onClick={handleRepeatWorkout}
                 className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-                title="Repeat workout"
+                title={t('workout.repeat')}
               >
                 <Repeat size={20} />
-                <span className="ml-2">Repeat</span>
+                <span className="ml-2">{t('workout.repeat')}</span>
               </button>
             )}
             {workout.exercises.length > 0 && (
@@ -275,7 +276,7 @@ function Workout() {
                 className="flex items-center bg-primary-600 hover:bg-primary-700 text-white px-3 py-1 rounded-lg transition-colors"
               >
                 <Check size={20} />
-                <span className="ml-2">Finish</span>
+                <span className="ml-2">{t('workout.finish')}</span>
               </button>
             )}
           </div>
@@ -284,7 +285,7 @@ function Workout() {
         <div className="px-4 pb-4 space-y-4">
           <input
             type="text"
-            placeholder="Workout Name"
+            placeholder={t('workout.workoutName')}
             value={workout.name}
             onChange={(e) => setWorkout({ ...workout, name: e.target.value })}
             className="w-full text-xl font-semibold bg-transparent border-none focus:ring-0 p-0 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
@@ -292,7 +293,7 @@ function Workout() {
           
           <div className="flex space-x-4">
             <div className="flex-1">
-              <label className="block text-sm text-gray-600 dark:text-gray-300">Date</label>
+              <label className="block text-sm text-gray-600 dark:text-gray-300">{t('workout.date')}</label>
               <input
                 type="date"
                 value={workout.date}
@@ -301,7 +302,7 @@ function Workout() {
               />
             </div>
             <div className="flex-1">
-              <label className="block text-sm text-gray-600 dark:text-gray-300">Start Time</label>
+              <label className="block text-sm text-gray-600 dark:text-gray-300">{t('workout.startTime')}</label>
               <input
                 type="time"
                 value={workout.startTime}
@@ -310,7 +311,7 @@ function Workout() {
               />
             </div>
             <div className="flex-1">
-              <label className="block text-sm text-gray-600 dark:text-gray-300">End Time</label>
+              <label className="block text-sm text-gray-600 dark:text-gray-300">{t('workout.endTime')}</label>
               <input
                 type="time"
                 value={workout.endTime || ''}
@@ -321,7 +322,7 @@ function Workout() {
           </div>
 
           <MoodSelector
-            label="How are you feeling?"
+            label={t('workout.howFeeling')}
             value={workout.mood}
             onChange={handleMoodChange}
             previousMood={previousWorkout?.finalMood}
@@ -345,21 +346,21 @@ function Workout() {
             className="w-full py-3 border-2 border-dashed border-gray-300 dark:border-secondary-600 rounded-lg text-gray-600 dark:text-gray-300 flex items-center justify-center space-x-2 hover:border-primary-500 hover:text-primary-500 dark:hover:border-primary-400 dark:hover:text-primary-400 transition-colors"
           >
             <Plus size={20} />
-            <span>Add Exercise</span>
+            <span>{t('workout.addExercise')}</span>
           </button>
           
           {workout.exercises.length === 0 && (
             <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-              <p>No exercises added yet</p>
-              <p className="text-sm">Click the button above to add exercises</p>
+              <p>{t('workout.noExercises')}</p>
+              <p className="text-sm">{t('workout.clickToAdd')}</p>
             </div>
           )}
         </div>
 
         <div className="space-y-4">
-          <h3 className="font-medium text-gray-900 dark:text-white">Workout Notes</h3>
+          <h3 className="font-medium text-gray-900 dark:text-white">{t('workout.workoutNotes')}</h3>
           <textarea
-            placeholder="Add notes about your workout..."
+            placeholder={t('workout.addNotes')}
             value={workout.notes}
             onChange={(e) => setWorkout({ ...workout, notes: e.target.value })}
             className="w-full rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white h-32 placeholder-gray-500 dark:placeholder-gray-400"
@@ -372,10 +373,10 @@ function Workout() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-secondary-800 rounded-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Incomplete Workout Data
+              {t('workout.incomplete.title')}
             </h3>
             <div className="text-gray-600 dark:text-gray-300 mb-6">
-              <p className="mb-4">The following exercises have empty fields:</p>
+              <p className="mb-4">{t('workout.incomplete.message')}</p>
               <ul className="list-disc pl-5 space-y-2">
                 {emptyFields.map((item, index) => (
                   <li key={index}>
@@ -384,20 +385,20 @@ function Workout() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-4">Would you like to auto-complete these fields with the previous values?</p>
+              <p className="mt-4">{t('workout.incomplete.autoComplete')}</p>
             </div>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowFinishDialog(false)}
                 className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-secondary-700 rounded-lg transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 onClick={autoCompleteWorkout}
                 className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
               >
-                Auto-complete & Continue
+                {t('workout.incomplete.continue')}
               </button>
             </div>
           </div>
@@ -409,10 +410,10 @@ function Workout() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-secondary-800 rounded-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              How was your workout?
+              {t('workout.finalMood.title')}
             </h3>
             <MoodSelector
-              label="Rate your workout"
+              label={t('workout.finalMood.rate')}
               value={workout.finalMood}
               onChange={handleFinalMoodChange}
               previousMood={previousWorkout?.finalMood}
