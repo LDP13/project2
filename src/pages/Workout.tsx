@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Plus, Repeat } from 'lucide-react';
-import type { Workout as WorkoutType, WorkoutExercise as WorkoutExerciseType } from '../types';
+import { ArrowLeft, Plus, Repeat, Check } from 'lucide-react';
+import type { Workout as WorkoutType, WorkoutExercise as WorkoutExerciseType, Set } from '../types';
 import WorkoutExercise from '../components/WorkoutExercise';
 import { useWorkoutStore } from '../store/workouts';
 
@@ -19,6 +19,9 @@ function Workout() {
     exercises: [],
     notes: ''
   });
+
+  const [showFinishDialog, setShowFinishDialog] = useState(false);
+  const [emptyFields, setEmptyFields] = useState<{ exercise: string; fields: string[] }[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -66,7 +69,6 @@ function Workout() {
   };
 
   const handleRepeatWorkout = () => {
-    // Create a new workout with the same structure but empty values
     const repeatedWorkout: WorkoutType = {
       id: crypto.randomUUID(),
       name: workout.name,
@@ -77,7 +79,6 @@ function Workout() {
         id: crypto.randomUUID(),
         sets: ex.sets.map(set => ({
           id: crypto.randomUUID(),
-          // Keep the previous values as placeholders but don't set them as actual values
           weight: undefined,
           reps: undefined,
           time: undefined,
@@ -97,9 +98,123 @@ function Workout() {
       notes: workout.notes
     };
 
-    // Add the new workout and navigate to it
     addWorkout(repeatedWorkout);
     navigate(`/workout/${repeatedWorkout.id}`);
+  };
+
+  const checkEmptyFields = () => {
+    const emptyFieldsList: { exercise: string; fields: string[] }[] = [];
+
+    workout.exercises.forEach(exercise => {
+      const emptySetFields: string[] = [];
+      
+      exercise.sets.forEach(set => {
+        switch (exercise.exercise.type) {
+          case 'weight-reps':
+            if (set.weight === undefined) emptySetFields.push('weight');
+            if (set.reps === undefined) emptySetFields.push('reps');
+            break;
+          case 'weight-time':
+            if (set.weight === undefined) emptySetFields.push('weight');
+            if (set.time === undefined) emptySetFields.push('time');
+            break;
+          case 'bodyweight-reps':
+            if (set.reps === undefined) emptySetFields.push('reps');
+            break;
+          case 'bodyweight-time':
+            if (set.time === undefined) emptySetFields.push('time');
+            break;
+          case 'cardio':
+            if (set.time === undefined) emptySetFields.push('time');
+            if (set.distance === undefined) emptySetFields.push('distance');
+            if (set.calories === undefined) emptySetFields.push('calories');
+            break;
+        }
+      });
+
+      if (emptySetFields.length > 0) {
+        emptyFieldsList.push({
+          exercise: exercise.exercise.name,
+          fields: [...new Set(emptySetFields)]
+        });
+      }
+    });
+
+    return emptyFieldsList;
+  };
+
+  const handleFinishWorkout = () => {
+    const foundEmptyFields = checkEmptyFields();
+    if (foundEmptyFields.length > 0) {
+      setEmptyFields(foundEmptyFields);
+      setShowFinishDialog(true);
+    } else {
+      finishWorkout();
+    }
+  };
+
+  const finishWorkout = (autoComplete: boolean = false) => {
+    let updatedWorkout = { ...workout };
+
+    if (autoComplete) {
+      updatedWorkout.exercises = workout.exercises.map(exercise => ({
+        ...exercise,
+        sets: exercise.sets.map(set => {
+          const newSet: Set = { ...set };
+          
+          switch (exercise.exercise.type) {
+            case 'weight-reps':
+              if (newSet.weight === undefined) {
+                newSet.weight = set._placeholder?.weight ?? 0;
+              }
+              if (newSet.reps === undefined) {
+                newSet.reps = set._placeholder?.reps ?? 0;
+              }
+              break;
+            case 'weight-time':
+              if (newSet.weight === undefined) {
+                newSet.weight = set._placeholder?.weight ?? 0;
+              }
+              if (newSet.time === undefined) {
+                newSet.time = set._placeholder?.time ?? 0;
+              }
+              break;
+            case 'bodyweight-reps':
+              if (newSet.reps === undefined) {
+                newSet.reps = set._placeholder?.reps ?? 0;
+              }
+              break;
+            case 'bodyweight-time':
+              if (newSet.time === undefined) {
+                newSet.time = set._placeholder?.time ?? 0;
+              }
+              break;
+            case 'cardio':
+              if (newSet.time === undefined) {
+                newSet.time = set._placeholder?.time ?? 0;
+              }
+              if (newSet.distance === undefined) {
+                newSet.distance = set._placeholder?.distance ?? 0;
+              }
+              if (newSet.calories === undefined) {
+                newSet.calories = set._placeholder?.calories ?? 0;
+              }
+              break;
+          }
+          
+          return newSet;
+        })
+      }));
+    }
+
+    updatedWorkout.endTime = new Date().toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+
+    updateWorkout(updatedWorkout);
+    navigate('/home');
   };
 
   return (
@@ -113,16 +228,27 @@ function Workout() {
             <ArrowLeft size={20} />
             <span className="ml-2">Back</span>
           </button>
-          {!isNew && (
-            <button
-              onClick={handleRepeatWorkout}
-              className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-              title="Repeat workout"
-            >
-              <Repeat size={20} />
-              <span className="ml-2">Repeat</span>
-            </button>
-          )}
+          <div className="flex items-center space-x-4">
+            {!isNew && (
+              <button
+                onClick={handleRepeatWorkout}
+                className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                title="Repeat workout"
+              >
+                <Repeat size={20} />
+                <span className="ml-2">Repeat</span>
+              </button>
+            )}
+            {workout.exercises.length > 0 && (
+              <button
+                onClick={handleFinishWorkout}
+                className="flex items-center bg-primary-600 hover:bg-primary-700 text-white px-3 py-1 rounded-lg transition-colors"
+              >
+                <Check size={20} />
+                <span className="ml-2">Finish</span>
+              </button>
+            )}
+          </div>
         </div>
         
         <div className="px-4 pb-4 space-y-4">
@@ -203,6 +329,46 @@ function Workout() {
           />
         </div>
       </div>
+
+      {/* Finish Workout Dialog */}
+      {showFinishDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-secondary-800 rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              Incomplete Workout Data
+            </h3>
+            <div className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="mb-4">The following exercises have empty fields:</p>
+              <ul className="list-disc pl-5 space-y-2">
+                {emptyFields.map((item, index) => (
+                  <li key={index}>
+                    <span className="font-medium">{item.exercise}:</span>{' '}
+                    {item.fields.join(', ')}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4">Would you like to auto-complete these fields with the previous values?</p>
+            </div>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowFinishDialog(false)}
+                className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-secondary-700 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowFinishDialog(false);
+                  finishWorkout(true);
+                }}
+                className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+              >
+                Auto-complete & Finish
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
