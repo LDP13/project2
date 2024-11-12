@@ -7,6 +7,7 @@ import Settings from './pages/Settings';
 import Statistics from './pages/Statistics';
 import ExerciseSelector from './pages/ExerciseSelector';
 import CreateExercise from './pages/CreateExercise';
+import GTG from './pages/GTG';
 import { useThemeStore } from './store/theme';
 
 function App() {
@@ -29,10 +30,9 @@ function App() {
           <Route path="statistics" element={<Statistics />} />
           <Route path="exercise-selector" element={<ExerciseSelector />} />
           <Route path="create-exercise" element={<CreateExercise />} />
+          <Route path="gtg" element={<GTG />} />
         </Route>
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;

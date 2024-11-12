@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Plus, Settings, BarChart2 } from 'lucide-react';
+import { Home, Plus, Settings, BarChart2, Repeat } from 'lucide-react';
 import { useThemeStore } from '../store/theme';
 import { useTranslation } from 'react-i18next';
 
@@ -43,6 +43,16 @@ export default function Layout() {
                   <span className="text-xs">{t('common.home')}</span>
                 </button>
                 
+                <button
+                  onClick={() => navigate('/gtg')}
+                  className={`flex flex-col items-center space-y-1 ${
+                    location.pathname === '/gtg' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400'
+                  }`}
+                >
+                  <Repeat size={24} />
+                  <span className="text-xs">GTG</span>
+                </button>
+
                 <button
                   onClick={() => navigate('/workout/new')}
                   className="flex flex-col items-center justify-center w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full -mt-8 text-white shadow-lg"

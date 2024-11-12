@@ -55,3 +55,24 @@ export interface Workout {
   mood?: WorkoutMood;
   finalMood?: WorkoutMood;
 }
+
+export interface GTGSession {
+  id: string;
+  exerciseId: string;
+  startTime: string;
+  interval: number; // in minutes
+  targetSets: number;
+  setsCompleted: number;
+  repsPerSet: number;
+  date: string;
+  isActive: boolean;
+  notes?: string;
+}
+
+export interface GTGSet {
+  id: string;
+  sessionId: string;
+  timestamp: string;
+  reps: number;
+  notes?: string;
+}
