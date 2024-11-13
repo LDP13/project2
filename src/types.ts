@@ -72,6 +72,7 @@ export interface GTGSet {
   id: string;
   sessionId: string;
   timestamp: string;
+  date: string;
   reps?: number;
   time?: number;
   weight?: number;

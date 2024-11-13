@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Clock, Check, AlertCircle } from 'lucide-react';
 import type { GTGSession, Exercise, GTGSet } from '../../types';
 import { useGTGStore } from '../../store/gtg';
+import { format } from 'date-fns';
 
 interface GTGSessionCardProps {
   session: GTGSession;
@@ -68,6 +69,7 @@ function GTGSessionCard({ session, exercise }: GTGSessionCardProps) {
     addSet({
       sessionId: session.id,
       timestamp: new Date().toISOString(),
+      date: new Date().toISOString().split('T')[0],
       reps: session.repsPerSet,
       time: session.timePerSet,
       weight: session.weight,
@@ -87,6 +89,9 @@ function GTGSessionCard({ session, exercise }: GTGSessionCardProps) {
           <h3 className="font-medium text-gray-900 dark:text-white">{exercise.name}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {getSetDescription()} every {session.interval} minutes
+          </p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+            {format(new Date(session.date), 'PPP')}
           </p>
         </div>
         {session.isActive && (

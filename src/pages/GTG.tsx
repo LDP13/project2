@@ -32,19 +32,21 @@ function GTG() {
   };
 
   return (
-    <div className="p-4 space-y-6 pb-20">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Grease the Groove</h1>
-        <button
-          onClick={handleNewSession}
-          className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg"
-        >
-          <Plus size={20} />
-          <span>New Session</span>
-        </button>
+    <div className="min-h-screen bg-gray-100 dark:bg-secondary-900">
+      <header className="bg-white dark:bg-secondary-800 border-b border-gray-200 dark:border-secondary-700">
+        <div className="p-4 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Grease the Groove</h1>
+          <button
+            onClick={handleNewSession}
+            className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg"
+          >
+            <Plus size={20} />
+            <span>New Session</span>
+          </button>
+        </div>
       </header>
 
-      <div className="space-y-4">
+      <div className="p-4 space-y-4">
         {sessions.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <p>No GTG sessions yet</p>
