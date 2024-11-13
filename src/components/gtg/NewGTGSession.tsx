@@ -13,6 +13,7 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
   const [interval, setInterval] = useState(60);
   const [targetSets, setTargetSets] = useState(10);
   const [repsPerSet, setRepsPerSet] = useState(5);
+  const [timePerSet, setTimePerSet] = useState(30);
   const [weight, setWeight] = useState(0);
   const [startTime, setStartTime] = useState(
     new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
@@ -20,7 +21,9 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
   
   const { addSession, getActiveSession } = useGTGStore();
   const selectedExercise = exercises.find(e => e.id === exerciseId);
-  const showWeightInput = selectedExercise?.type.includes('weight');
+  const showWeightInput = selectedExercise?.category === 'weight-reps' || selectedExercise?.category === 'weight-time';
+  const showTimeInput = selectedExercise?.category === 'weight-time' || selectedExercise?.category === 'bodyweight-time';
+  const showRepsInput = selectedExercise?.category === 'weight-reps' || selectedExercise?.category === 'bodyweight-reps';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +40,8 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
       startTime,
       interval,
       targetSets,
-      repsPerSet,
+      repsPerSet: showRepsInput ? repsPerSet : undefined,
+      timePerSet: showTimeInput ? timePerSet : undefined,
       weight: showWeightInput ? weight : undefined,
       setsCompleted: 0,
       date: new Date().toISOString().split('T')[0],
@@ -121,19 +125,37 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              Reps per Set
-            </label>
-            <input
-              type="number"
-              value={repsPerSet}
-              onChange={(e) => setRepsPerSet(parseInt(e.target.value))}
-              min="1"
-              required
-              className="w-full rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white"
-            />
-          </div>
+          {showRepsInput && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                Reps per Set
+              </label>
+              <input
+                type="number"
+                value={repsPerSet}
+                onChange={(e) => setRepsPerSet(parseInt(e.target.value))}
+                min="1"
+                required
+                className="w-full rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white"
+              />
+            </div>
+          )}
+
+          {showTimeInput && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                Time per Set (seconds)
+              </label>
+              <input
+                type="number"
+                value={timePerSet}
+                onChange={(e) => setTimePerSet(parseInt(e.target.value))}
+                min="1"
+                required
+                className="w-full rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white"
+              />
+            </div>
+          )}
 
           {showWeightInput && (
             <div>

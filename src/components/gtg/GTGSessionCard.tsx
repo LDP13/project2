@@ -34,10 +34,9 @@ function GTGSessionCard({ session, exercise }: GTGSessionCardProps) {
       const diff = next.getTime() - now.getTime();
 
       if (diff <= 0) {
-        // Time for next set - send notification
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification('Time for your next set!', {
-            body: `${exercise.name}: ${session.repsPerSet} ${exercise.type.includes('weight') ? 'reps at ' + session.weight + 'kg' : 'reps'}`,
+            body: getSetDescription(),
           });
         }
         setTimeLeft('Now!');
@@ -51,11 +50,26 @@ function GTGSessionCard({ session, exercise }: GTGSessionCardProps) {
     return () => clearInterval(timer);
   }, [session, sets, exercise]);
 
+  const getSetDescription = () => {
+    const parts = [];
+    if (session.repsPerSet) {
+      parts.push(`${session.repsPerSet} reps`);
+    }
+    if (session.timePerSet) {
+      parts.push(`${session.timePerSet} seconds`);
+    }
+    if (session.weight) {
+      parts.push(`at ${session.weight}kg`);
+    }
+    return `${exercise.name}: ${parts.join(' ')}`;
+  };
+
   const handleCompleteSet = () => {
     addSet({
       sessionId: session.id,
       timestamp: new Date().toISOString(),
       reps: session.repsPerSet,
+      time: session.timePerSet,
       weight: session.weight,
     });
 
@@ -72,8 +86,7 @@ function GTGSessionCard({ session, exercise }: GTGSessionCardProps) {
         <div>
           <h3 className="font-medium text-gray-900 dark:text-white">{exercise.name}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {session.repsPerSet} reps {exercise.type.includes('weight') && `at ${session.weight}kg `}
-            every {session.interval} minutes
+            {getSetDescription()} every {session.interval} minutes
           </p>
         </div>
         {session.isActive && (

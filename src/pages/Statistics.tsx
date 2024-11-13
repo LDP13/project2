@@ -5,12 +5,17 @@ import VolumeStats from '../components/statistics/VolumeStats';
 import ProgressionStats from '../components/statistics/ProgressionStats';
 import RestTimeStats from '../components/statistics/RestTimeStats';
 import MuscleDistribution from '../components/statistics/MuscleDistribution';
+import GTGStats from '../components/statistics/GTGStats';
 import { useWorkoutStore } from '../store/workouts';
+import { useGTGStore } from '../store/gtg';
+import { useExerciseStore } from '../store/exercises';
 import { useTranslation } from 'react-i18next';
 
 function Statistics() {
   const [timeRange, setTimeRange] = useState('30');
   const { workouts } = useWorkoutStore();
+  const { sessions, getSetsForSession } = useGTGStore();
+  const exercises = useExerciseStore((state) => state.exercises);
   const { t } = useTranslation();
 
   const stats = useMemo(() => {
@@ -60,7 +65,14 @@ function Statistics() {
           volume: number;
           repsVolume: number;
         };
-      }>
+      }>,
+      gtg: {
+        totalSets: 0,
+        totalReps: 0,
+        completionRate: 0,
+        volumeByExercise: {} as Record<string, number>,
+        setsPerDay: {} as Record<string, number>,
+      }
     };
 
     // Process workouts
@@ -78,11 +90,9 @@ function Statistics() {
 
         exercise.sets.forEach(set => {
           if (set.reps) {
-            // Calculate reps volume (Reps × Sets)
             exerciseRepsVolume += set.reps;
             
             if (set.weight) {
-              // Calculate weighted volume (Weight × Reps × Sets)
               const setVolume = set.reps * set.weight;
               exerciseVolume += setVolume;
               stats.totalWeight += setVolume;
@@ -115,6 +125,44 @@ function Statistics() {
         }
       });
     });
+
+    // Process GTG sessions
+    const filteredSessions = sessions.filter(session => 
+      new Date(session.date) >= cutoffDate
+    );
+
+    filteredSessions.forEach(session => {
+      const exercise = exercises.find(e => e.id === session.exerciseId);
+      if (!exercise) return;
+
+      const sets = getSetsForSession(session.id);
+      
+      // Update GTG stats
+      stats.gtg.totalSets += session.setsCompleted;
+      stats.gtg.completionRate += (session.setsCompleted / session.targetSets) * 100;
+
+      // Calculate volume
+      let sessionVolume = 0;
+      sets.forEach(set => {
+        if (set.reps) {
+          stats.gtg.totalReps += set.reps;
+          if (set.weight) {
+            sessionVolume += set.reps * set.weight;
+          }
+        }
+      });
+
+      // Update volume by exercise
+      stats.gtg.volumeByExercise[exercise.name] = (stats.gtg.volumeByExercise[exercise.name] || 0) + sessionVolume;
+
+      // Track sets per day
+      stats.gtg.setsPerDay[session.date] = (stats.gtg.setsPerDay[session.date] || 0) + session.setsCompleted;
+    });
+
+    // Calculate average completion rate
+    if (filteredSessions.length > 0) {
+      stats.gtg.completionRate /= filteredSessions.length;
+    }
 
     // Calculate progression
     workouts.forEach(workout => {
@@ -220,7 +268,7 @@ function Statistics() {
     });
 
     return stats;
-  }, [workouts, timeRange]);
+  }, [workouts, timeRange, sessions, exercises, getSetsForSession]);
 
   // Calculate workouts per week
   const workoutsPerWeek = useMemo(() => {
@@ -265,7 +313,7 @@ function Statistics() {
       <section>
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('statistics.overview')}</h2>
         <QuickStats
-          totalReps={stats.totalReps}
+          totalReps={stats.totalReps + stats.gtg.totalReps}
           totalWeight={stats.totalWeight}
           workoutsPerWeek={workoutsPerWeek}
           avgSessionDuration={avgSessionDuration}
@@ -282,6 +330,14 @@ function Statistics() {
           repsVolumeByMuscle={stats.repsVolumeByMuscle}
         />
       </section>
+
+      {/* GTG Stats Section */}
+      {sessions.length > 0 && (
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">GTG Statistics</h2>
+          <GTGStats stats={stats.gtg} />
+        </section>
+      )}
 
       {/* Progress Tracking Section */}
       <section>

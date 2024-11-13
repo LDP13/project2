@@ -60,7 +60,8 @@ export interface GTGSession {
   interval: number; // in minutes
   targetSets: number;
   setsCompleted: number;
-  repsPerSet: number;
+  repsPerSet?: number;
+  timePerSet?: number;
   weight?: number;
   date: string;
   isActive: boolean;
@@ -71,7 +72,8 @@ export interface GTGSet {
   id: string;
   sessionId: string;
   timestamp: string;
-  reps: number;
+  reps?: number;
+  time?: number;
   weight?: number;
   notes?: string;
 }
