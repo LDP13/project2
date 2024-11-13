@@ -1,12 +1,10 @@
-export type ExerciseCategory = 'strength' | 'bodyweight' | 'cardio' | 'other';
-
-export type ExerciseType = 
-  | 'weight-reps'    // Strength - Weight & Reps
-  | 'weight-time'    // Strength - Weight & Time
-  | 'bodyweight-reps'// Bodyweight - Reps only
-  | 'bodyweight-time'// Bodyweight - Time only
-  | 'cardio'         // Cardio - Time, Distance, Calories
-  | 'other';         // Other - Notes only
+export type ExerciseCategory = 
+  | 'weight-reps'    // Force - Poids & Répétitions
+  | 'weight-time'    // Force - Poids & Temps
+  | 'bodyweight-reps'// Poids du corps - Répétitions
+  | 'bodyweight-time'// Poids du corps - Temps
+  | 'cardio'         // Cardio - Temps, Distance, Calories
+  | 'other';         // Autre - Notes uniquement
 
 export type WorkoutMood = 'great' | 'good' | 'neutral' | 'bad' | 'terrible';
 
@@ -15,7 +13,6 @@ export interface Exercise {
   name: string;
   muscle: string;
   category: ExerciseCategory;
-  type: ExerciseType;
 }
 
 export interface Set {
@@ -64,6 +61,7 @@ export interface GTGSession {
   targetSets: number;
   setsCompleted: number;
   repsPerSet: number;
+  weight?: number;
   date: string;
   isActive: boolean;
   notes?: string;
@@ -74,5 +72,6 @@ export interface GTGSet {
   sessionId: string;
   timestamp: string;
   reps: number;
+  weight?: number;
   notes?: string;
 }

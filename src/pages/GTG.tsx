@@ -74,9 +74,7 @@ function GTG() {
       {showNewSession && (
         <NewGTGSession
           onClose={() => setShowNewSession(false)}
-          exercises={exercises.filter(e => 
-            e.type === 'bodyweight-reps' || e.type === 'bodyweight-time'
-          )}
+          exercises={exercises}
         />
       )}
 

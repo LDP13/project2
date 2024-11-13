@@ -13,11 +13,14 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
   const [interval, setInterval] = useState(60);
   const [targetSets, setTargetSets] = useState(10);
   const [repsPerSet, setRepsPerSet] = useState(5);
+  const [weight, setWeight] = useState(0);
   const [startTime, setStartTime] = useState(
     new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
   );
   
   const { addSession, getActiveSession } = useGTGStore();
+  const selectedExercise = exercises.find(e => e.id === exerciseId);
+  const showWeightInput = selectedExercise?.type.includes('weight');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +38,7 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
       interval,
       targetSets,
       repsPerSet,
+      weight: showWeightInput ? weight : undefined,
       setsCompleted: 0,
       date: new Date().toISOString().split('T')[0],
       isActive: true,
@@ -130,6 +134,23 @@ function NewGTGSession({ onClose, exercises }: NewGTGSessionProps) {
               className="w-full rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white"
             />
           </div>
+
+          {showWeightInput && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                Weight (kg)
+              </label>
+              <input
+                type="number"
+                value={weight}
+                onChange={(e) => setWeight(parseFloat(e.target.value))}
+                min="0"
+                step="0.5"
+                required
+                className="w-full rounded-lg border-gray-300 dark:border-secondary-600 dark:bg-secondary-700 dark:text-white"
+              />
+            </div>
+          )}
 
           <div className="flex justify-end space-x-3 pt-4">
             <button

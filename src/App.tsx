@@ -10,7 +10,7 @@ import CreateExercise from './pages/CreateExercise';
 import GTG from './pages/GTG';
 import { useThemeStore } from './store/theme';
 
-function App() {
+export default function App() {
   const { colors } = useThemeStore();
 
   useEffect(() => {

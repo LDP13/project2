@@ -7,26 +7,26 @@ interface ExerciseStore {
 }
 
 const defaultExercises: Exercise[] = [
-  // Strength - Weight & Reps
-  { id: '1', name: 'Bench Press', muscle: 'Chest', category: 'strength', type: 'weight-reps' },
-  { id: '2', name: 'Deadlift', muscle: 'Back', category: 'strength', type: 'weight-reps' },
+  // Force - Poids & Répétitions
+  { id: '1', name: 'Développé couché', muscle: 'Chest', category: 'weight-reps' },
+  { id: '2', name: 'Squat', muscle: 'Legs', category: 'weight-reps' },
   
-  // Strength - Weight & Time
-  { id: '3', name: 'Farmers Walk', muscle: 'Core', category: 'strength', type: 'weight-time' },
+  // Force - Poids & Temps
+  { id: '3', name: 'Farmer Walk', muscle: 'Core', category: 'weight-time' },
   
-  // Bodyweight - Reps
-  { id: '4', name: 'Push-ups', muscle: 'Chest', category: 'bodyweight', type: 'bodyweight-reps' },
-  { id: '5', name: 'Pull-ups', muscle: 'Back', category: 'bodyweight', type: 'bodyweight-reps' },
+  // Poids du corps - Répétitions
+  { id: '4', name: 'Pompes', muscle: 'Chest', category: 'bodyweight-reps' },
+  { id: '5', name: 'Tractions', muscle: 'Back', category: 'bodyweight-reps' },
   
-  // Bodyweight - Time
-  { id: '6', name: 'Plank', muscle: 'Core', category: 'bodyweight', type: 'bodyweight-time' },
+  // Poids du corps - Temps
+  { id: '6', name: 'Planche', muscle: 'Core', category: 'bodyweight-time' },
   
   // Cardio
-  { id: '7', name: 'Running', muscle: 'Cardio', category: 'cardio', type: 'cardio' },
-  { id: '8', name: 'Cycling', muscle: 'Cardio', category: 'cardio', type: 'cardio' },
+  { id: '7', name: 'Course', muscle: 'Cardio', category: 'cardio' },
+  { id: '8', name: 'Vélo', muscle: 'Cardio', category: 'cardio' },
   
-  // Other
-  { id: '9', name: 'Stretching', muscle: 'Other', category: 'other', type: 'other' },
+  // Autre
+  { id: '9', name: 'Étirements', muscle: 'Other', category: 'other' },
 ];
 
 export const useExerciseStore = create<ExerciseStore>((set) => ({
